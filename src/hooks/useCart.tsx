@@ -28,6 +28,12 @@ interface CartContextData {
 const CartContext = createContext<CartContextData>({} as CartContextData)
 
 export function CartProvider({ children }: CartProviderProps): JSX.Element {
+  const [products, setProducts] = useState<Product[]>([])
+
+  useEffect(() => {
+    api.get('products').then(res => setProducts(res.data))
+  }, [])
+
   const [cart, setCart] = useState<Product[]>(() => {
     // const storagedCart = Buscar dados do localStorage
 
@@ -35,12 +41,14 @@ export function CartProvider({ children }: CartProviderProps): JSX.Element {
     //   return JSON.parse(storagedCart);
     // }
 
-    return []
+    return [] // retorna o carrinho
   })
 
   const addProduct = async (productId: number) => {
     try {
-      // TODO
+      const currentProduct: Product = products.find(p => p.id === productId)!
+
+      setCart([...cart, currentProduct])
     } catch {
       // TODO
     }
