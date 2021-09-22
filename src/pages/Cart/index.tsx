@@ -1,3 +1,4 @@
+import { log } from 'console'
 import React from 'react'
 import {
   MdDelete,
@@ -25,6 +26,7 @@ const Cart = (): JSX.Element => {
     priceFormatted: formatPrice(product.price),
     subTotal: formatPrice(product.price * product.amount),
   }))
+
   const total = formatPrice(
     cart.reduce(
       (sumTotal, product) => (sumTotal += product.price * product.amount),
@@ -33,11 +35,22 @@ const Cart = (): JSX.Element => {
   )
 
   function handleProductIncrement(product: Product) {
-    // TODO
+    const formattedProduct = {
+      ...product,
+      productId: product.id,
+      amount: product.amount + 1,
+    }
+
+    updateProductAmount(formattedProduct)
   }
 
   function handleProductDecrement(product: Product) {
-    // TODO
+    const formattedProduct = {
+      ...product,
+      productId: product.id,
+      amount: product.amount - 1,
+    }
+    updateProductAmount(formattedProduct)
   }
 
   function handleRemoveProduct(productId: number) {
@@ -85,7 +98,7 @@ const Cart = (): JSX.Element => {
                   <button
                     type='button'
                     data-testid='increment-product'
-                    // onClick={() => handleProductIncrement()}
+                    onClick={() => handleProductIncrement(product)}
                   >
                     <MdAddCircleOutline size={20} />
                   </button>
